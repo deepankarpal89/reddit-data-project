@@ -39,7 +39,7 @@ with open("trained_model.pkl","rb") as f:
 def get_prediction(input_dict):
     d = pd.DataFrame(input_dict, index=np.arange(1))
     training_df = pd.DataFrame(0, index=np.arange(d.shape[0]), columns = training_df_column_names)
-    training_df.drop("pk_id", axis=1, inplace=True)
+    #training_df.drop("pk_id", axis=1, inplace=True)
     d = df_format(d)
     for index, row in d.iterrows():
         if str(row["domain"]) in training_df_column_names:
