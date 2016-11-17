@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <title>Reddit Predictor - {% block title %}{% endblock %}</title>
+    {% endblock head %}
+  </head>
+  <body>
+    <div id="links">
+      <a href="/basic">Basic</a>
+      <a href="/intermediate">Intermediate</a>
+      <a href="/advance">Advance</a>
+    </div>
+    <div id="content">
+      {% block content %}
+      <h3>Deepankar Pal</h3>
+      {% endblock %}
+    </div>
+  </body>
+</html>

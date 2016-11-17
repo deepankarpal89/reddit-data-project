@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Advance{% endblock %}
+
+{% block content %}
+<h3>Advanced Task - Predict score of latest posts from reddit</h3>
+<form action="/advance" method="get">
+  Type in reddit name to fetch latest posts:
+  <input type="text" name="external_subreddit">
+  <input type="submit">
+</form>
+
+{% if external_subreddit %}
+<div id="external_subreddit">
+  <p>
+    Showing latest posts for the subreddit  {{ external_subreddit }}.
+    <br>
+    Found {{ external_posts|length }} posts.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Ups</th>
+        <th>Predicted ups</th>
+        <th>Check</th>
+    </thead>
+    <tbody>
+      {% for post in external_posts %}
+      <tr>
+        <td>{{ post.title }}</td>
+        <td>{{ post.ups }}</td>
+        <td id="{{ post.id }}_predicted"></td>
+        <td><button onclick="getPrediction('{{ post.id }}', '{{ post.title }}', '{{ post.domain }}', '{{ post.subreddit }}')">Get Prediction</button></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<script>
+  function getPrediction(postId, title, domain, subreddit) {
+    var target = document.getElementById(postId + '_predicted');
+    target.innerHTML = 'Fetching...';
+    var data = new FormData();
+    data.append('title', title);
+    data.append('domain', domain);
+    data.append('subreddit', subreddit);
+
+    xhr = new XMLHttpRequest();
+    var url = "/predictor"
+    xhr.open("POST", url, true);
+
+    xhr.onload = function () {
+      if (xhr.readyState == 4) {
+        console.log(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
+        target.innerHTML = response.prediction;
+      }
+    }
+    xhr.send(data);
+  }
+</script>
+
+{% endblock %}

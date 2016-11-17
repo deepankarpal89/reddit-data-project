@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Intermediate{% endblock %}
+
+{% block content %}
+<h3>Intermediate Task - Predict score of posts</h3>
+<form action="/intermediate" method="get">
+  Choose subreddit:
+  <select name="subreddit">
+    {% for item in subreddits %}
+    <option value="{{ item }}">{{ item }}</option>
+    {% endfor %}
+  </select>
+  <input type="submit">
+</form>
+
+{% if posts %}
+<div id="posts">
+  <p>Below is the list of posts from the chosen subreddit {{ chosen_subreddit }}.
+    <br>Select the title for which you want to compare
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Score</th>
+        <th>Ups</th>
+        <th>Downs</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td>
+          <a href="/intermediate?postid={{ post.id }}">{{ post.title }}</a>
+        </td>
+        <td>{{ post.score }}</td>
+        <td>{{ post.ups }}</td>
+        <td>{{ post.downs }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if chosen_post %}
+<div id="chosen_post">
+  <p>
+  You chose the post {{ chosen_post.id }}
+  <br>
+  Post title: {{ chosen_post.title }}
+  <br>
+  Post ups: {{ chosen_post.ups }}
+  <br>
+  Post subreddit: {{ chosen_post.subreddit }}
+  <br />
+  Prediction: {{ prediction }}
+  </p>
+</div>
+{% endif %}
+
+{% endblock %}

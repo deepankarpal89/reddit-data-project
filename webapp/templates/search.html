@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<h3>Basic Task - Search posts</h3>
+<form action="/basic" method="get">
+  Search for: <input type="text" name="query">
+</form>
+
+{% if show_results %}
+  {% if results %}
+    <div id="results-box">
+      <div>
+        A total of {{ results|length }} results were found for {{ query }}.
+        {% if pagination %}A total of {{ totalpages }} pages were found{% endif %}
+      </div>
+      <div id="results-content">
+        <table>
+          <thead>
+            <tr>
+              <th>Subreddit</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in results %}
+            <tr>
+              <td>{{ item.subreddit }}</td>
+              <td>{{ item.title }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    Sorry, no results could be found. Try searching for another term.
+  {% endif %}
+{% endif %}
+{% endblock %}
